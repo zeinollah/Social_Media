@@ -1,15 +1,14 @@
 from django.contrib.auth import get_user_model
-from django.shortcuts import render
-from rest_framework import generics
-from accounts.serializers import RegistrationSerializer
+from rest_framework import viewsets
+from accounts.serializers import AccountSerializer
+
 
 
 User = get_user_model()
-class RegisterAPIView(generics.GenericAPIView):
+class AccountAPIView(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = RegistrationSerializer
+    serializer_class = AccountSerializer
 
-
-
-    
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
