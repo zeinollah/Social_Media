@@ -1,14 +1,21 @@
 from django.contrib.auth import get_user_model
 from rest_framework import viewsets
-from accounts.serializers import AccountSerializer
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from accounts.models import Profile
+from accounts.serializers import UserSerializer, ProfileSerializer
 
 
 
 User = get_user_model()
-class AccountAPIView(viewsets.ModelViewSet):
+class UserAPIView(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = AccountSerializer
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
 
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+
+class ProfileAPIView(viewsets.ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+
 
