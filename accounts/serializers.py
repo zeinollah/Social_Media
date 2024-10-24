@@ -63,6 +63,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    #TODO : get full name, username, email from UserSerializer and show it in profile panel administration
     phone_number = serializers.CharField(
         required=False,
         validators=[UniqueValidator(
@@ -88,7 +89,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         profile.save()
         return profile
 
-    def update(self, instance, validated_data):
+    def update(self, instance, validated_data): #TODO : we got "detail": "No Profile matches the given query." for PATCH
         instance.phone_number = validated_data.get('phone_number', instance.phone_number)
         instance.bio = validated_data.get('bio', instance.bio)
         instance.image = validated_data.get('image', instance.image)

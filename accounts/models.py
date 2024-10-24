@@ -17,7 +17,7 @@ class Profile(models.Model):
     bio = models.TextField(_("bio"),max_length= 150, blank=True, null=True)
     birth_date = models.DateField (blank=True, null=True)
     gender = models.CharField(max_length=6 ,choices=Gender_Choices, blank=True, null=True)
-    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True) #TODO : user should not see this fild.
     last_login = models.DateTimeField(auto_now=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
@@ -26,5 +26,5 @@ class Profile(models.Model):
         ordering = ["-created_on"]
 
     def __str__(self):
-        return f"Profile {self.user.username}"
+        return f" {self.user.username} Profile"
 
