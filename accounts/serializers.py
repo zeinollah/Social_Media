@@ -63,7 +63,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    #TODO : get full name, username, email from UserSerializer and show it in profile panel administration
     phone_number = serializers.CharField(
         required=False,
         validators=[UniqueValidator(
