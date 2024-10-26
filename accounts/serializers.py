@@ -29,7 +29,6 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'password']
-        search_fields = ['first_name', 'last_name', 'username',]
         read_only_fields = ['id', 'created_on']
 
     def create(self, validated_data):
@@ -74,7 +73,6 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ['user', 'phone_number', 'bio', 'birth_date', 'gender', 'last_login', 'created_on', 'updated_on']
-        search_fields = ['user']
         read_only_fields = ['last_login', 'created_on', 'updated_on','ip_address']
 
     def create(self, validated_data):

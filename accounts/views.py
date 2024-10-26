@@ -11,11 +11,13 @@ class UserAPIView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
+    search_fields = ['first_name', 'last_name', 'username', ]
 
 
 class ProfileAPIView(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
+    search_fields = ['user']
 
 
