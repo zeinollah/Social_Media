@@ -30,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'password']
         read_only_fields = ['id', 'created_on']
-
+    #TODO : ask Ruhy about def CRUD in serializers or views
     def create(self, validated_data):
         user = User(
             username=validated_data.get('username'),
