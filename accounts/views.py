@@ -20,4 +20,7 @@ class ProfileAPIView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     search_fields = ['user']
 
+    #TODO: write save ip_address def .
+
+
 
