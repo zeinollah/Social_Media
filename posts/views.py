@@ -28,7 +28,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        if not request.user.is_authenticated:
+        if instance.author != self.request.user:
             raise PermissionDenied("You do not have permission to delete this post.")
         self.perform_destroy(instance)
         return Response({'detail': 'Post deleted'}, status=status.HTTP_204_NO_CONTENT)
@@ -49,7 +49,7 @@ class PostFileViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        if not request.user.is_authenticated:
+        if instance.author != self.request.user:
             raise PermissionDenied("You do not have permission to delete this file.")
         self.perform_destroy(instance)
         return Response({'detail': 'File deleted'}, status=status.HTTP_204_NO_CONTENT)
