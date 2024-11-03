@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from posts.models import Post, PostFile
-
+from posts.models import Post, PostFile, Comment
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -39,7 +38,6 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 
-
 class PostFileSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(required=False)
     video = serializers.FileField(required=False)
@@ -49,7 +47,6 @@ class PostFileSerializer(serializers.ModelSerializer):
         model = PostFile
         fields = '__all__'
         read_only_fields = ['created_at', 'updated_at']
-
 
     def validate(self, attrs):
         caption = attrs.get('caption')
@@ -78,3 +75,12 @@ class PostFileSerializer(serializers.ModelSerializer):
     #         raise serializers.ValidationError("You do not have permission to delete this file.")
     #     instance.delete()
     #     return {'detail': 'File deleted '}
+
+
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
+        read_only = ['post','User']
