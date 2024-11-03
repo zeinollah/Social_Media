@@ -3,8 +3,15 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
-from posts.models import Post, PostFile
-from posts.serializers import PostSerializer, PostFileSerializer
+from posts.models import (Post,
+                          PostFile,
+                          Comment,
+                          )
+from posts.serializers import (PostSerializer,
+                               PostFileSerializer,
+                               CommentSerializer,
+                               )
+
 
 
 
@@ -18,13 +25,6 @@ class PostViewSet(viewsets.ModelViewSet):
         'title',
         'text',
     ]
-
-    def perform_create(self, serializer):
-        post = serializer.save()
-        post.author.profiles.save()
-
-    def perform_update(self, serializer):
-        serializer.save()
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -46,11 +46,6 @@ class PostFileViewSet(viewsets.ModelViewSet):
     filter_backends = [SearchFilter]
     search_fields = ['post']
 
-    def perform_create(self, serializer):
-        serializer.save()
-
-    def perform_update(self, serializer):
-        serializer.save()
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -58,3 +53,9 @@ class PostFileViewSet(viewsets.ModelViewSet):
             raise PermissionDenied("You do not have permission to delete this file.")
         self.perform_destroy(instance)
         return Response({'detail': 'File deleted'}, status=status.HTTP_204_NO_CONTENT)
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer

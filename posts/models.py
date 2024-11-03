@@ -1,4 +1,3 @@
-
 from django.db import models
 from accounts.serializers import User
 
@@ -29,3 +28,14 @@ class PostFile(models.Model):
 
      class Meta:
          ordering = ['-created_at']
+
+
+
+class Comment(models.Model):
+    post = models.ForeignKey('Post', related_name='comments', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment = models.TextField(max_length=150, blank=True, null=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_on"]
