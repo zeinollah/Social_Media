@@ -9,9 +9,8 @@ class PostSerializer(serializers.ModelSerializer):
         read_only_fields = ['created_at', 'updated_at']
 
     def validate(self, attrs):
-        text = attrs.get('text')
 
-        if len(text) > 1000:
+        if len(attrs.get('text')) > 1000:
             raise serializers.ValidationError("text could not longer than 1000 characters")
 
         return attrs
@@ -49,9 +48,8 @@ class PostFileSerializer(serializers.ModelSerializer):
         read_only_fields = ['created_at', 'updated_at']
 
     def validate(self, attrs):
-        caption = attrs.get('caption')
 
-        if len(caption) > 500:
+        if len(attrs.get('caption')) > 500:
             raise serializers.ValidationError("caption could not longer than 500 characters")
 
         return attrs
