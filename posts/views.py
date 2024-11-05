@@ -1,8 +1,11 @@
+from django.http import Http404
 from rest_framework import viewsets, status
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
+
+from accounts import serializers
 from posts.models import (Post,
                           PostFile,
                           Comment,
@@ -29,7 +32,6 @@ class PostViewSet(viewsets.ModelViewSet):
         self.perform_destroy(instance)
         return Response({'detail': 'Post deleted'}, status=status.HTTP_204_NO_CONTENT)
 
-
 class PostFileViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = PostFile.objects.all()
@@ -52,4 +54,13 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        post_id = self.request.data.get('post')
+        if not post_id:
+            raise ValidationError("You must provide a post_id.")
+
+        try:
+            post = Post.objects.get(pk=post_id)
+        except Post.DoesNotExist:
+            raise Http404("Post does not exist.")
+
+        serializer.save(author=self.request.user, post=post)
