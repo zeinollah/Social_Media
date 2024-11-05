@@ -39,3 +39,14 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ["-created_on"]
+
+
+class Like(models.Model):
+    author = models.ForeignKey(User, related_name="likes", on_delete=models.CASCADE)
+    post = models.ForeignKey('Post', related_name='likes', on_delete=models.CASCADE)
+    is_liked = models.BooleanField(default=False)
+    dislike = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
