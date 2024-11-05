@@ -38,19 +38,16 @@ class PostFileSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     author_username = serializers.CharField(source='author.username', read_only=True)
-    comment_id = serializers.CharField(source='id', read_only=True)
-    post_id = serializers.CharField(source='post.id', read_only=True)
+    comment_id = serializers.IntegerField(source='id', read_only=True)
+    post_id = serializers.IntegerField(source='post.id', read_only=True)
 
     class Meta:
         model = Comment
         fields = ['author_username', 'comment_id', 'post_id', 'comment', 'created_on']
-        read_only_fields = ['created_on']
+        read_only_fields = ['created_on', 'author_username', 'comment_id','post_id']
 
     def validate(self, attrs):
         if len(attrs.get('comment')) > 150:
             raise serializers.ValidationError("Comment could not longer than 150 characters")
-
-        if not Post.objects.exists():
-            raise serializers.ValidationError("Post does not exist")
 
         return attrs
