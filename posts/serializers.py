@@ -33,7 +33,7 @@ class PostFileSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Caption could not longer than 500 characters")
 
         return attrs
-
+#TODO: fix the PATCH method
 
 
 class CommentSerializer(serializers.ModelSerializer):
