@@ -32,8 +32,8 @@ class PostFile(models.Model):
 
 
 class Comment(models.Model):
+    author = models.ForeignKey(User, related_name="comments", on_delete=models.CASCADE)
     post = models.ForeignKey('Post', related_name='comments', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.TextField(max_length=150, blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
