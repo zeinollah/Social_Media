@@ -15,16 +15,12 @@ from posts.serializers import (PostSerializer,
 
 
 
-
 class PostViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     filter_backends = [SearchFilter]
-    search_fields = [
-        'title',
-        'text',
-    ]
+    search_fields = ['title','text',]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -32,11 +28,6 @@ class PostViewSet(viewsets.ModelViewSet):
             raise PermissionDenied("You do not have permission to delete this post.")
         self.perform_destroy(instance)
         return Response({'detail': 'Post deleted'}, status=status.HTTP_204_NO_CONTENT)
-
-
-class PostListViewSer(viewsets.ReadOnlyModelViewSet):
-    pass
-#TODO: write to user can take post list filter by public.
 
 
 class PostFileViewSet(viewsets.ModelViewSet):
@@ -59,3 +50,6 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
