@@ -1,5 +1,5 @@
-from rest_framework import serializers
-from posts.models import Post, PostFile, Comment
+from rest_framework import serializers, status
+from posts.models import Post, PostFile, Comment, Like
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -36,6 +36,7 @@ class PostFileSerializer(serializers.ModelSerializer):
 #TODO: fix the PATCH method
 
 
+
 class CommentSerializer(serializers.ModelSerializer):
     author_username = serializers.CharField(source='author.username', read_only=True)
     comment_id = serializers.IntegerField(source='id', read_only=True)
@@ -49,5 +50,23 @@ class CommentSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if len(attrs.get('comment')) > 150:
             raise serializers.ValidationError("Comment could not longer than 150 characters")
+
+        return attrs
+
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    author_username = serializers.CharField(source='author.username', read_only=True)
+
+    class Meta:
+        model = Like
+        fields = ['author_username', 'post','is_liked', 'dislike', 'created_at', 'updated_at']
+        read_only_fields = ['author_username', 'created_at', 'updated_at']
+
+
+    def validate(self, attrs):
+        post = attrs.get('post')
+        if not Post.objects.filter(id=post.id).exists():
+            raise serializers.ValidationError({"post": ["Post does not exist."]}, status.HTTP_404_NOT_FOUND)
 
         return attrs
