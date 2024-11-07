@@ -47,6 +47,7 @@ class Like(models.Model):
     is_liked = models.BooleanField(default=False)
     dislike = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-created_at']

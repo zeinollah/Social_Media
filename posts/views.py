@@ -9,11 +9,13 @@ from accounts import serializers
 from posts.models import (Post,
                           PostFile,
                           Comment,
-                          )
+                          Like,
+)
 from posts.serializers import (PostSerializer,
                                PostFileSerializer,
                                CommentSerializer,
-                               )
+                               LikeSerializer,
+)
 
 
 
@@ -32,6 +34,9 @@ class PostViewSet(viewsets.ModelViewSet):
         self.perform_destroy(instance)
         return Response({'detail': 'Post deleted'}, status=status.HTTP_204_NO_CONTENT)
 
+
+
+
 class PostFileViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = PostFile.objects.all()
@@ -46,6 +51,7 @@ class PostFileViewSet(viewsets.ModelViewSet):
             raise PermissionDenied("You do not have permission to delete this file.")
         self.perform_destroy(instance)
         return Response({'detail': 'File deleted'}, status=status.HTTP_204_NO_CONTENT)
+
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -64,3 +70,13 @@ class CommentViewSet(viewsets.ModelViewSet):
             raise Http404("Post does not exist.")
 
         serializer.save(author=self.request.user, post=post)
+
+
+
+class LikeViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = Like.objects.all()
+    serializer_class = LikeSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user,)
