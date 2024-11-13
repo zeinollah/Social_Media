@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.permissions import IsAuthenticated
@@ -36,7 +37,6 @@ class PostViewSet(viewsets.ModelViewSet):
 
 
 
-
 class PostFileViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = PostFile.objects.all()
@@ -58,17 +58,14 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    search_fields = ['comment']
 
     def perform_create(self, serializer):
         post_id = self.request.data.get('post')
         if not post_id:
             raise ValidationError("You must provide a post_id.")
 
-        try:
-            post = Post.objects.get(pk=post_id)
-        except Post.DoesNotExist:
-            raise Http404("Post does not exist.")
-
+        post = get_object_or_404(Post, pk=self.request.data.get('post'))
         serializer.save(author=self.request.user, post=post)
 
 
@@ -79,4 +76,5 @@ class LikeViewSet(viewsets.ModelViewSet):
     serializer_class = LikeSerializer
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user,)
+        post = get_object_or_404(Post, pk=self.request.data.get('post'))
+        serializer.save(author=self.request.user,post=post)

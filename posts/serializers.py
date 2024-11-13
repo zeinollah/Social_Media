@@ -57,11 +57,13 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class LikeSerializer(serializers.ModelSerializer):
     author_username = serializers.CharField(source='author.username', read_only=True)
+    like_id = serializers.IntegerField(source='id', read_only=True)
+    post_id = serializers.IntegerField(source='post.id', read_only=True)
 
     class Meta:
         model = Like
-        fields = ['author_username', 'post','is_liked', 'dislike', 'created_at', 'updated_at']
-        read_only_fields = ['author_username', 'created_at', 'updated_at']
+        fields = ['author_username', 'like_id','post_id', 'likes_count', 'dislikes_count', 'created_at', 'updated_at']
+        read_only_fields = ['author_username', 'created_at', 'updated_at','likes_count', 'dislikes_count']
 
 
     def validate(self, attrs):

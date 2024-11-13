@@ -15,6 +15,9 @@ class Post(models.Model):
     class Meta:
         ordering = ['-created_at']
 
+    def __str__(self):
+        return f"{self.title} by {self.author}"
+
 
 
 class PostFile(models.Model):
@@ -48,6 +51,14 @@ class Like(models.Model):
     dislike = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def likes_count(self):
+        return Like.objects.filter(post=self.post, is_liked=True).count()
+
+    @property
+    def dislikes_count(self):
+        return Like.objects.filter(post=self.post, dislike=True).count()
 
     class Meta:
         ordering = ['-created_at']
