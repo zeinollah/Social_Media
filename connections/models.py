@@ -3,7 +3,7 @@ from accounts.models import Profile
 
 
 
-class Friendship(models.Model):
+class Connection(models.Model):
     PENDING = "Pending"
     ACCEPTED = "Accepted"
     REJECTED = "Rejected"
