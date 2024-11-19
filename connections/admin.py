@@ -1,10 +1,12 @@
 from django.contrib import admin
 
-from connections.models import Friendship
+from accounts import serializers
+from connections.models import Connection
 
 
-class FriendshipAdmin(admin.ModelAdmin):
+class ConnectionAdmin(admin.ModelAdmin):
+
     actions = None
     list_display = ('request_sender', 'request_receiver', 'status', 'created_at')
     search_fields = ('request_sender', 'request_receiver')
-admin.site.register(Friendship, FriendshipAdmin)
+admin.site.register(Connection, ConnectionAdmin)

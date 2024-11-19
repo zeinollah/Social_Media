@@ -1,14 +1,10 @@
-from http.client import responses
-
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from accounts.models import Profile
 from .serializers import UserListSerializer, FriendshipSerializer
-from .models import Friendship
+from .models import Connection
 
 
 
@@ -36,7 +32,7 @@ class RequestView(APIView):
             sender_profile = request.user.profiles
             recipient_profile = receiver.profiles
 
-            Friendship.objects.create(
+            Connection.objects.create(
                 request_sender=sender_profile,
                 request_receiver=recipient_profile
             )
@@ -46,7 +42,7 @@ class RequestView(APIView):
 
 
     def get(self, request):
-        requests = Friendship.objects.all()
+        requests = Connection.objects.all()
         serializer = FriendshipSerializer(requests, many=True)
         return Response({"requests": serializer.data}, status=status.HTTP_200_OK)
 
