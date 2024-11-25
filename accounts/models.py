@@ -12,7 +12,7 @@ class Profile(models.Model):
         ('FEMALE', 'FEMALE'),
     )
     user = models.OneToOneField(User, related_name='profiles', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='images_file/account_image', blank=True, null=True)
+    image = models.ImageField(upload_to='media/account_image', blank=True, null=True)
     phone_number = models.BigIntegerField(blank=True, null=True, unique=True)
     bio = models.TextField(_("bio"),max_length= 150, blank=True, null=True)
     birth_date = models.DateField (blank=True, null=True)
