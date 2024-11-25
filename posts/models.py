@@ -19,10 +19,10 @@ class Post(models.Model):
 
 class PostFile(models.Model):
      post = models.ForeignKey(Post,related_name="post_files", on_delete=models.CASCADE)
-     image = models.ImageField(upload_to='image_file/post_image/',blank=True,null=True)
-     video = models.FileField(upload_to='image_file/post_video/',blank=True,null=True)
+     image = models.ImageField(upload_to='media/post_image/',blank=True,null=True)
+     video = models.FileField(upload_to='media/post_video/',blank=True,null=True)
      caption = models.TextField(max_length=500, blank=True, null=True)
-     file = models.FileField(upload_to='image_file/post_file/',blank=True,null=True)
+     file = models.FileField(upload_to='media/post_file/',blank=True,null=True)
      created_at = models.DateTimeField(auto_now_add=True)
      updated_at = models.DateTimeField(auto_now=True)
 

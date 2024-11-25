@@ -4,20 +4,26 @@ from connections.models import Connection
 
 User = get_user_model()
 
-class UserListSerializer(serializers.ModelSerializer):
-    user_id = serializers.PrimaryKeyRelatedField(source='id', queryset=User.objects.all())
+class RequestListSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ["user_id","username", "email"]
-        read_only_fields = ["username", "email"]
+        fields = ["username", "image"]
+        read_only_fields = ["username"]
+
+    def get_image(self, instance):
+        if hasattr(instance, 'image') and instance.profile.image:
+            return instance.profile.image.url
+        return ""
 
 
 
-class FriendshipSerializer(serializers.ModelSerializer):
-    request_id = serializers.PrimaryKeyRelatedField(source='id', queryset=Connection.objects.all())
-    request_sender = serializers.CharField(source='request_sender.user.username')
-    request_receiver = serializers.CharField(source='request_receiver.user.username')
+
+class ConnectionSerializer(serializers.ModelSerializer):
+    request_id = serializers.PrimaryKeyRelatedField(source='id', read_only=True)
+    request_sender = serializers.CharField(source='request_sender.user', read_only=True)
+    request_receiver = serializers.CharField(source='request_receiver.user', read_only=True)
 
     class Meta:
         model = Connection
