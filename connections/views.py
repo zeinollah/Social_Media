@@ -1,5 +1,4 @@
 from http.client import responses
-
 from django.contrib.auth import get_user_model
 from django.db import connection
 from django.db.models import Q
@@ -8,7 +7,6 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from accounts.models import Profile
 from .serializers import RequestListSerializer, ConnectionSerializer
 from .models import Connection
@@ -107,4 +105,5 @@ class FriendShipListView(APIView):
         users = [co.request_sender.user for co in connections]
         serializer = RequestListSerializer(users, many=True)
         return Response(serializer.data)
+
 
