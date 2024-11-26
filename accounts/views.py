@@ -18,7 +18,7 @@ class ProfileAPIView(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
-    search_fields = ['user']
+    search_fields = ['username', 'email', 'phone_number' ]
 
     #TODO: write save ip_address def .
 

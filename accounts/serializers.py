@@ -69,10 +69,23 @@ class ProfileSerializer(serializers.ModelSerializer):
             message="Phone number already used",
         )]
     )
+    username = serializers.PrimaryKeyRelatedField(source='user.username', queryset=User.objects.all())
+    email = serializers.PrimaryKeyRelatedField(source='user.email', queryset=User.objects.all())
 
     class Meta:
         model = Profile
-        fields = ['user', 'phone_number', 'bio', 'birth_date', 'gender', 'last_login', 'created_on', 'updated_on']
+        fields = [
+            'image',
+            'username',
+            'email',
+            'phone_number',
+            'bio',
+            'birth_date',
+            'gender',
+            'last_login',
+            'created_on',
+            'updated_on'
+        ]
         read_only_fields = ['last_login', 'created_on', 'updated_on','ip_address']
 
     def create(self, validated_data):
