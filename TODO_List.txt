@@ -1,3 +1,12 @@
-#TODO: set cookies
-#TODO: set Rate Limiting for login
+TODO: set cookies
+TODO: set Rate Limiting for login
+TODO: make active and deactivate mode for account
+TODO: add report for post and account
+TODO: secret chat
+TODO: Use gmail for password recovery
+TODO: Make panel admin to allow us ban user base on country like Chat GPT
+TODO: Add save post
+TODO: Make save massage
+TODO: Get user IP address
+
 
