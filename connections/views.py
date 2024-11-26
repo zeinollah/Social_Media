@@ -2,6 +2,7 @@ from http.client import responses
 
 from django.contrib.auth import get_user_model
 from django.db import connection
+from django.db.models import Q
 from django.utils.html import strip_tags
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
@@ -91,3 +92,19 @@ class RequestStatusView(APIView):
 
         connections.save()
         return Response({"detail": responses_message},status=status.HTTP_200_OK)
+
+
+class FriendShipListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+
+    def get(self, request):
+        connections = Connection.objects.filter(
+            Q(request_receiver=request.user.profiles) |
+            Q(request_sender=request.user.profiles),
+            status='Accepted'
+        )
+        users = [co.request_sender.user for co in connections]
+        serializer = RequestListSerializer(users, many=True)
+        return Response(serializer.data)
+

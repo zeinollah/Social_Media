@@ -5,11 +5,12 @@ from connections.models import Connection
 User = get_user_model()
 
 class RequestListSerializer(serializers.ModelSerializer):
+    user_id = serializers.PrimaryKeyRelatedField(source='id',read_only=True)
     image = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ["username", "image"]
+        fields = ["user_id","username", "image"]
         read_only_fields = ["username"]
 
     def get_image(self, instance):
