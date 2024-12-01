@@ -30,4 +30,5 @@ urlpatterns = [
     path('api/accounts/', include('accounts.urls')),
     path('api/posts/', include('posts.urls')),
     path('api/connections/', include('connections.urls')),
+    path('api/reports/', include('reports.urls')),
  ]
